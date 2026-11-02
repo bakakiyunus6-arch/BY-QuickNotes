@@ -95,14 +95,21 @@ function saveNote() {
 }
 
 function displayNotes() {
-    notesList.innerHTML = "";
+    notesList.innerHTML += `
+    <div>
+        <h3>${item.title}</h3>
+        <p>${item.content}</p>
+        <button onclick="deleteNote(${item.id})">Delete</button>
+    </div>
+`;
+    function deleteNote(id) {
+    notes = notes.filter(item => item.id !== id);
 
-    notes.forEach(item => {
-        notesList.innerHTML += `
-            <div>
-                <h3>${item.title}</h3>
-                <p>${item.content}</p>
-            </div>
+    localStorage.setItem("notes", JSON.stringify(notes));
+
+    displayNotes();
+    }
+    
         `;
     });
 }
