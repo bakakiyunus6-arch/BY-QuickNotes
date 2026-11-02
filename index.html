@@ -53,10 +53,13 @@
 
     <h2>BY Quick Notes 📝</h2>
 
-    <textarea id="note"
-        placeholder="Write your note here..."></textarea>
+    <input type="text" id="title" placeholder="Note title">
 
-    <button onclick="saveNote()">Save Note</button>
+<textarea id="note" placeholder="Write your note here..."></textarea>
+
+<button onclick="saveNote()">Add Note</button>
+
+<div id="notes-list"></div>
 
     <p id="message"></p>
 
