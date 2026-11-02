@@ -66,20 +66,48 @@
 </div>
 
 <script>
-    const note = document.getElementById("note");
+    const title = document.getElementById("title");
+const note = document.getElementById("note");
+const notesList = document.getElementById("notes-list");
 
-    note.value = localStorage.getItem("savedNote") || "";
+let notes = JSON.parse(localStorage.getItem("notes")) || [];
 
-    function saveNote() {
-        localStorage.setItem("savedNote", note.value);
+function saveNote() {
+    const newNote = {
+        id: Date.now(),
+        title: title.value,
+        content: note.value
+    };
 
-        document.getElementById("message").textContent =
-            "Note saved successfully!";
+    if (!title.value.trim() || !note.value.trim()) {
+        alert("Please enter a title and note.");
+        return;
     }
 
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("service-worker.js");
-    }
+    notes.push(newNote);
+
+    localStorage.setItem("notes", JSON.stringify(notes));
+
+    title.value = "";
+    note.value = "";
+
+    displayNotes();
+}
+
+function displayNotes() {
+    notesList.innerHTML = "";
+
+    notes.forEach(item => {
+        notesList.innerHTML += `
+            <div>
+                <h3>${item.title}</h3>
+                <p>${item.content}</p>
+            </div>
+        `;
+    });
+}
+
+displayNotes();
 </script>
 
 </body>
