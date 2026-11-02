@@ -1,0 +1,11 @@
+{
+  "name": "BY Quick Notes",
+  "short_name": "BY Notes",
+  "description": "A simple offline notes application",
+  "start_url": "/BY-QuickNotes/",
+  "scope": "/BY-QuickNotes/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#007bff"
+}
