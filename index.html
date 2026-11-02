@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BY Quick Notes</title>
+</head>
+<body>
+    <h2>BY Quick Notes</h2>
+
+    <textarea id="note" placeholder="Write your note..."></textarea>
+
+    <br>
+
+    <button onclick="saveNote()">Save Note</button>
+
+    <p id="message"></p>
+
+    <script>
+        const note = document.getElementById("note");
+
+        note.value = localStorage.getItem("savedNote") || "";
+
+        function saveNote() {
+            localStorage.setItem("savedNote", note.value);
+            document.getElementById("message").textContent =
+                "Note saved successfully!";
+        }
+    </script>
+</body>
+</html>
