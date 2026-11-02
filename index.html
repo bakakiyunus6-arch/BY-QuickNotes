@@ -1,398 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#002060">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#002060">
+<title>BY Quick Notes 3.0</title>
+<link rel="manifest" href="manifest.json">
 
-    <title>BY Quick Notes</title>
+<style>
+* {
+    box-sizing: border-box;
+}
 
-    <link rel="manifest" href="manifest.json">
+body {
+    margin: 0;
+    padding: 18px;
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    color: #222;
+    transition: 0.3s;
+}
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+body.dark {
+    background: #121826;
+    color: #f1f1f1;
+}
 
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            background: #f0f4f8;
-            color: #222;
-        }
+.app {
+    max-width: 650px;
+    margin: auto;
+}
 
-        .app {
-            max-width: 600px;
-            margin: 20px auto;
-        }
+header {
+    text-align: center;
+    color: #002060;
+}
 
-        header {
-            text-align: center;
-            color: #002060;
-            margin-bottom: 25px;
-        }
+.dark header {
+    color: #70a5ff;
+}
 
-        .editor, .note-card {
-            background: white;
-            padding: 18px;
-            border-radius: 12px;
-            margin-bottom: 18px;
-            box-shadow: 0 3px 12px #ddd;
-        }
+.box, .note-card {
+    background: white;
+    padding: 18px;
+    margin: 15px 0;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px #ccc;
+}
 
-        input, textarea {
-            width: 100%;
-            padding: 13px;
-            margin-bottom: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-        }
+.dark .box,
+.dark .note-card {
+    background: #202b3d;
+    box-shadow: none;
+}
 
-        textarea {
-            height: 140px;
-            resize: vertical;
-        }
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 15px;
+}
 
-        button {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            margin: 3px;
-        }
+textarea {
+    height: 130px;
+    resize: vertical;
+}
 
-        .save-btn {
-            width: 100%;
-            background: #002060;
-            color: white;
-            font-size: 16px;
-        }
+button {
+    border: none;
+    padding: 11px;
+    margin: 4px 2px;
+    border-radius: 7px;
+    cursor: pointer;
+}
 
-        .edit-btn {
-            background: #007bff;
-            color: white;
-        }
+.primary {
+    background: #002060;
+    color: white;
+    width: 100%;
+}
 
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-        }
+.edit {
+    background: #007bff;
+    color: white;
+}
 
-        .cancel-btn {
-            background: #777;
-            color: white;
-        }
+.delete {
+    background: #dc3545;
+    color: white;
+}
 
-        .note-card h3 {
-            color: #002060;
-            overflow-wrap: anywhere;
-        }
+.pin {
+    background: #e6a700;
+    color: white;
+}
 
-        .note-card p {
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-        }
+.tools button {
+    background: #007bff;
+    color: white;
+}
 
-        .date {
-            font-size: 12px;
-            color: #777;
-        }
+.note-card h3 {
+    overflow-wrap: anywhere;
+}
 
-        #search {
-            margin-top: 10px;
-        }
+.note-card p {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
 
-        #message {
-            text-align: center;
-            color: green;
-        }
+.meta {
+    color: #777;
+    font-size: 12px;
+}
 
-        .empty {
-            text-align: center;
-            color: #777;
-            padding: 20px;
-        }
+.dark .meta {
+    color: #bbb;
+}
 
-        @media (max-width: 480px) {
-            body {
-                padding: 12px;
-            }
+#message {
+    text-align: center;
+    color: green;
+}
 
-            .app {
-                margin-top: 10px;
-            }
-        }
-    </style>
+.empty {
+    text-align: center;
+    color: #777;
+    padding: 20px;
+}
+
+@media(max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-    <header>
-        <h1>BY Quick Notes 📝</h1>
-        <p>Your simple personal notes application</p>
-    </header>
+<header>
+    <h1>BY Quick Notes 📝</h1>
+    <p>Your notes. Your ideas. Your organisation.</p>
+</header>
 
-    <section class="editor">
+<div class="box">
 
-        <h2 id="form-heading">Create a Note</h2>
+    <h2 id="form-heading">Create Note</h2>
 
+    <input
+        id="title"
+        type="text"
+        placeholder="Note title"
+        maxlength="100"
+    >
+
+    <select id="category">
+        <option value="Personal">Personal</option>
+        <option value="School">School</option>
+        <option value="Business">Business</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <textarea
+        id="note"
+        placeholder="Write your note..."
+    ></textarea>
+
+    <button class="primary" onclick="saveNote()">
+        Save Note
+    </button>
+
+    <button id="cancel" onclick="cancelEdit()" hidden>
+        Cancel Editing
+    </button>
+
+    <p id="message"></p>
+
+</div>
+
+<div class="box">
+
+    <h2>Manage Notes</h2>
+
+    <input
+        type="search"
+        id="search"
+        placeholder="Search notes..."
+        oninput="displayNotes()"
+    >
+
+    <select id="filter" onchange="displayNotes()">
+        <option value="All">All Categories</option>
+        <option value="Personal">Personal</option>
+        <option value="School">School</option>
+        <option value="Business">Business</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <label>
         <input
-            type="text"
-            id="title"
-            placeholder="Enter note title"
-            maxlength="100"
+            type="checkbox"
+            id="favourites"
+            onchange="displayNotes()"
+            style="width:auto"
         >
+        Show favourites only
+    </label>
 
-        <textarea
-            id="note"
-            placeholder="Write your note here..."
-        ></textarea>
+</div>
 
-        <button class="save-btn" onclick="saveNote()">
-            Save Note
-        </button>
+<div class="tools box">
 
-        <button
-            class="cancel-btn"
-            id="cancel-btn"
-            onclick="cancelEdit()"
-            hidden
-        >
-            Cancel Editing
-        </button>
+    <h2>App Settings</h2>
 
-        <p id="message"></p>
+    <button onclick="toggleDarkMode()">
+        🌙 Toggle Dark Mode
+    </button>
 
-    </section>
+    <button onclick="exportNotes()">
+        📥 Backup Notes
+    </button>
 
-    <section>
+    <button onclick="document.getElementById('importFile').click()">
+        📤 Restore Notes
+    </button>
 
-        <h2>My Notes</h2>
+    <input
+        type="file"
+        id="importFile"
+        accept=".json,application/json"
+        hidden
+        onchange="importNotes(event)"
+    >
 
-        <input
-            type="search"
-            id="search"
-            placeholder="Search your notes..."
-            oninput="displayNotes()"
-        >
+</div>
 
-        <div id="notes-list"></div>
+<h2>My Notes</h2>
 
-    </section>
+<div id="notes-list"></div>
 
-    <footer>
-        <p style="text-align:center; color:#777;">
-            BY Quick Notes | Created by BY Yunusu
-        </p>
-    </footer>
+<footer style="text-align:center; padding:20px;">
+    <p>BY Quick Notes 3.0</p>
+    <p>Created by BY Yunusu</p>
+</footer>
 
 </div>
 
 <script>
 
-    const titleInput = document.getElementById("title");
-    const noteInput = document.getElementById("note");
-    const notesList = document.getElementById("notes-list");
-    const message = document.getElementById("message");
+const titleInput = document.getElementById("title");
+const noteInput = document.getElementById("note");
+const categoryInput = document.getElementById("category");
+const notesList = document.getElementById("notes-list");
+const message = document.getElementById("message");
 
-    let notes = JSON.parse(localStorage.getItem("notes")) || [];
-    let editingId = null;
+let notes = JSON.parse(localStorage.getItem("notes")) || [];
+let editingId = null;
 
-    function saveNote() {
+function storeNotes() {
+    localStorage.setItem("notes", JSON.stringify(notes));
+}
 
-        const title = titleInput.value.trim();
-        const content = noteInput.value.trim();
+function saveNote() {
 
-        if (!title || !content) {
-            alert("Please enter a title and note.");
-            return;
+    const title = titleInput.value.trim();
+    const content = noteInput.value.trim();
+
+    if (!title || !content) {
+        alert("Enter a title and note.");
+        return;
+    }
+
+    if (editingId !== null) {
+
+        const selected = notes.find(item => item.id === editingId);
+
+        if (selected) {
+            selected.title = title;
+            selected.content = content;
+            selected.category = categoryInput.value;
+            selected.updatedAt = new Date().toISOString();
         }
 
-        if (editingId !== null) {
+        message.textContent = "Note updated!";
 
-            const selectedNote = notes.find(
-                item => item.id === editingId
-            );
+    } else {
 
-            if (selectedNote) {
-                selectedNote.title = title;
-                selectedNote.content = content;
-                selectedNote.updatedAt = new Date().toISOString();
+        notes.unshift({
+            id: Date.now(),
+            title,
+            content,
+            category: categoryInput.value,
+            favourite: false,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        });
+
+        message.textContent = "Note saved!";
+    }
+
+    storeNotes();
+    cancelEdit();
+    displayNotes();
+}
+
+function displayNotes() {
+
+    notesList.innerHTML = "";
+
+    const search = document.getElementById("search")
+        .value.toLowerCase();
+
+    const filter = document.getElementById("filter").value;
+    const onlyFavourites = document.getElementById("favourites").checked;
+
+    const filtered = notes.filter(item => {
+
+        const matchesSearch =
+            item.title.toLowerCase().includes(search) ||
+            item.content.toLowerCase().includes(search);
+
+        const matchesCategory =
+            filter === "All" || (item.category || "Other") === filter;
+
+        const matchesFavourite =
+            !onlyFavourites || item.favourite === true;
+
+        return matchesSearch && matchesCategory && matchesFavourite;
+    });
+
+    if (filtered.length === 0) {
+        notesList.innerHTML =
+            '<p class="empty">No notes found.</p>';
+        return;
+    }
+
+    filtered.forEach(item => {
+
+        const card = document.createElement("div");
+        card.className = "note-card";
+
+        const heading = document.createElement("h3");
+        heading.textContent = item.title;
+
+        const content = document.createElement("p");
+        content.textContent = item.content;
+
+        const category = document.createElement("p");
+        category.className = "meta";
+        category.textContent = "Category: " + (item.category || "Other");
+
+        const date = document.createElement("p");
+        date.className = "meta";
+        date.textContent = "Updated: " +
+            new Date(item.updatedAt || item.createdAt).toLocaleString();
+
+        const favourite = document.createElement("button");
+        favourite.className = "pin";
+        favourite.textContent = item.favourite ? "★ Unpin" : "☆ Favourite";
+
+        favourite.onclick = () => toggleFavourite(item.id);
+
+        const edit = document.createElement("button");
+        edit.className = "edit";
+        edit.textContent = "Edit";
+        edit.onclick = () => editNote(item.id);
+
+        const remove = document.createElement("button");
+        remove.className = "delete";
+        remove.textContent = "Delete";
+        remove.onclick = () => deleteNote(item.id);
+
+        card.append(
+            heading,
+            content,
+            category,
+            date,
+            favourite,
+            edit,
+            remove
+        );
+
+        notesList.appendChild(card);
+    });
+}
+
+function editNote(id) {
+
+    const item = notes.find(note => note.id === id);
+
+    if (!item) return;
+
+    titleInput.value = item.title;
+    noteInput.value = item.content;
+    categoryInput.value = item.category || "Other";
+
+    editingId = id;
+
+    document.getElementById("form-heading").textContent = "Edit Note";
+    document.getElementById("cancel").hidden = false;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function cancelEdit() {
+
+    editingId = null;
+
+    titleInput.value = "";
+    noteInput.value = "";
+    categoryInput.value = "Personal";
+
+    document.getElementById("form-heading").textContent = "Create Note";
+    document.getElementById("cancel").hidden = true;
+}
+
+function deleteNote(id) {
+
+    if (!confirm("Delete this note?")) return;
+
+    notes = notes.filter(item => item.id !== id);
+
+    if (editingId === id) cancelEdit();
+
+    storeNotes();
+    displayNotes();
+}
+
+function toggleFavourite(id) {
+
+    const item = notes.find(note => note.id === id);
+
+    if (!item) return;
+
+    item.favourite = !item.favourite;
+
+    storeNotes();
+    displayNotes();
+}
+
+function toggleDarkMode() {
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "darkMode",
+        document.body.classList.contains("dark")
+    );
+}
+
+function exportNotes() {
+
+    const data = JSON.stringify(notes, null, 2);
+
+    const blob = new Blob([data], {
+        type: "application/json"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "BY-QuickNotes-Backup.json";
+    link.click();
+
+    URL.revokeObjectURL(url);
+}
+
+function importNotes(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function() {
+
+        try {
+
+            const imported = JSON.parse(reader.result);
+
+            if (
+                !Array.isArray(imported) ||
+                !imported.every(item =>
+                    item &&
+                    typeof item.title === "string" &&
+                    typeof item.content === "string"
+                )
+            ) {
+                throw new Error("Invalid backup format");
             }
 
-            message.textContent = "Note updated successfully!";
+            if (!confirm("Replace your current notes with this backup?")) {
+                return;
+            }
 
-        } else {
+            notes = imported.map(item => ({
+                ...item,
+                id: item.id ?? Date.now() + Math.random(),
+                category: item.category || "Other",
+                favourite: item.favourite === true
+            }));
 
-            const newNote = {
-                id: Date.now(),
-                title: title,
-                content: content,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-            };
-
-            notes.unshift(newNote);
-
-            message.textContent = "Note saved successfully!";
-        }
-
-        localStorage.setItem("notes", JSON.stringify(notes));
-
-        cancelEdit();
-        displayNotes();
-
-    }
-
-    function displayNotes() {
-
-        notesList.innerHTML = "";
-
-        const searchTerm = document
-            .getElementById("search")
-            .value.toLowerCase();
-
-        const filteredNotes = notes.filter(item =>
-            item.title.toLowerCase().includes(searchTerm) ||
-            item.content.toLowerCase().includes(searchTerm)
-        );
-
-        if (filteredNotes.length === 0) {
-
-            notesList.innerHTML =
-                '<p class="empty">No notes found.</p>';
-
-            return;
-        }
-
-        filteredNotes.forEach(item => {
-
-            const card = document.createElement("div");
-            card.className = "note-card";
-
-            const heading = document.createElement("h3");
-            heading.textContent = item.title;
-
-            const content = document.createElement("p");
-            content.textContent = item.content;
-
-            const date = document.createElement("p");
-            date.className = "date";
-
-            const updated = item.updatedAt || item.createdAt;
-
-            date.textContent = updated
-                ? "Last updated: " + new Date(updated).toLocaleString()
-                : "";
-
-            const editButton = document.createElement("button");
-            editButton.className = "edit-btn";
-            editButton.textContent = "Edit";
-
-            editButton.addEventListener("click", () => {
-                editNote(item.id);
-            });
-
-            const deleteButton = document.createElement("button");
-            deleteButton.className = "delete-btn";
-            deleteButton.textContent = "Delete";
-
-            deleteButton.addEventListener("click", () => {
-                deleteNote(item.id);
-            });
-
-            card.append(
-                heading,
-                content,
-                date,
-                editButton,
-                deleteButton
-            );
-
-            notesList.appendChild(card);
-
-        });
-
-    }
-
-    function editNote(id) {
-
-        const selectedNote = notes.find(
-            item => item.id === id
-        );
-
-        if (!selectedNote) return;
-
-        titleInput.value = selectedNote.title;
-        noteInput.value = selectedNote.content;
-
-        editingId = id;
-
-        document.getElementById("form-heading").textContent =
-            "Edit Note";
-
-        document.getElementById("cancel-btn").hidden = false;
-
-        document.querySelector(".save-btn").textContent =
-            "Update Note";
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-    }
-
-    function deleteNote(id) {
-
-        if (!confirm("Are you sure you want to delete this note?")) {
-            return;
-        }
-
-        notes = notes.filter(item => item.id !== id);
-
-        localStorage.setItem("notes", JSON.stringify(notes));
-
-        if (editingId === id) {
+            storeNotes();
             cancelEdit();
+            displayNotes();
+
+            alert("Notes restored successfully!");
+
+        } catch (error) {
+            alert("Invalid backup file.");
         }
 
-        displayNotes();
+        event.target.value = "";
+    };
 
-    }
+    reader.readAsText(file);
+}
 
-    function cancelEdit() {
+if (localStorage.getItem("darkMode") === "true") {
+    document.body.classList.add("dark");
+}
 
-        editingId = null;
+displayNotes();
 
-        titleInput.value = "";
-        noteInput.value = "";
-
-        document.getElementById("form-heading").textContent =
-            "Create a Note";
-
-        document.getElementById("cancel-btn").hidden = true;
-
-        document.querySelector(".save-btn").textContent =
-            "Save Note";
-
-    }
-
-    displayNotes();
-
-    if ("serviceWorker" in navigator) {
-
-        navigator.serviceWorker.register("service-worker.js")
-            .catch(error => {
-                console.log("Service worker registration failed:", error);
-            });
-
-    }
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+}
 
 </script>
 
